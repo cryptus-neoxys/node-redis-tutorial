@@ -1,0 +1,20 @@
+{
+  "name": "node-redis-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptus-neoxys/node-redis-tutorial.git"
+  },
+  "keywords": [],
+  "author": "cryptus-neoxys",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cryptus-neoxys/node-redis-tutorial/issues"
+  },
+  "homepage": "https://github.com/cryptus-neoxys/node-redis-tutorial#readme"
+}
