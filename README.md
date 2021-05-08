@@ -50,7 +50,7 @@ REDIS_PASSWORD=<your config PASSWORD>
 ```
 
 We are completely configured to use Redis in our app. To keep this article short I'm gonna skip over setting up mongoose and express, as this is a more generalised approach towards using Redis in any of your node apps.
-(You can find the code for models, controllers, etc in the GitHub repository.)
+(You can find the code for models, controllers, etc on the [GitHub repository](https://github.com/cryptus-neoxys/node-redis-tutorial))
 
 Let's set up the Redis Client in our `index.js`, add the following lines to your code.
 
