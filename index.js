@@ -1,9 +1,21 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
+import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import mongoose from "mongoose";
+import redis from "redis";
+import { promisify } from "util";
 
-const User = require("./models/User");
-const Post = require("./models/Post");
+import { User } from "./models/User.js";
+import { Post } from "./models/Post.js";
+
+// create redis client
+const client = redis.createClient({
+  host: process.env.REDIS_HOST,
+  port: parseInt(process.env.REDIS_PORT),
+  password: process.env.REDIS_PASSWORD,
+});
+export const getAsync = promisify(client.get).bind(client);
+export const setAsync = promisify(client.set).bind(client);
 
 const app = express();
 app.use(express.json());

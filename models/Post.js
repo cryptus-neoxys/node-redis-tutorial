@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose");
+import mongoose from "mongoose";
 
-const { User } = require("./User");
+import { User } from "./User.js";
 
 function slugify(str) {
   str = str.replace(/^\s+|\s+$/g, ""); // trim
@@ -21,7 +21,7 @@ function slugify(str) {
   return str;
 }
 
-const PostSchema = new Schema(
+const PostSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -33,7 +33,7 @@ const PostSchema = new Schema(
       required: [true, "body can't be empty"],
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
   },
@@ -44,6 +44,4 @@ PostSchema.pre("save", function () {
   this.slug = slugify(this.title);
 });
 
-const Post = model("Post", PostSchema);
-
-module.exports = Post;
+export const Post = mongoose.model("Post", PostSchema);
