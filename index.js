@@ -14,8 +14,8 @@ const client = redis.createClient({
   port: parseInt(process.env.REDIS_PORT),
   password: process.env.REDIS_PASSWORD,
 });
-export const getAsync = promisify(client.get).bind(client);
-export const setAsync = promisify(client.set).bind(client);
+const getAsync = promisify(client.get).bind(client);
+const setAsync = promisify(client.set).bind(client);
 
 const app = express();
 app.use(express.json());
@@ -40,9 +40,23 @@ app.post("/users", async (req, res) => {
 // READ
 app.get("/users", async (req, res) => {
   try {
+    const getRes = await getAsync("allUsers");
+    if (getRes) {
+      console.log("Used Cache");
+      return res.json({ success: true, data: JSON.parse(getRes) });
+    }
+
     const users = await User.find({});
 
-    return res.status(200).json(users);
+    await setAsync(
+      "allUsers", //
+      JSON.stringify({ users }), //
+      "EX", //
+      60 //
+    );
+
+    console.log("DB Used");
+    return res.status(200).json({ success: true, data: { users } });
   } catch (error) {
     console.error(error);
 
@@ -94,11 +108,24 @@ app.get("/users/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
+    const getRes = await getAsync(id);
+    if (getRes) {
+      console.log("Used Cache");
+      return res.json({ success: true, data: JSON.parse(getRes) });
+    }
     let user = await User.findById(id);
 
     if (!user)
       return res.status(404).json({ success: false, error: "User not found" });
 
+    await setAsync(
+      id, //
+      JSON.stringify({ user }), //
+      "EX", //
+      60 //
+    );
+
+    console.log("DB Used");
     return res.status(200).json(user);
   } catch (error) {
     console.error(error);
